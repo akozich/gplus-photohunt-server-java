@@ -30,10 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  *   GET /api/users
  *
  * @author vicfryzel@google.com (Vic Fryzel)
- * @deprecated Class exists for legacy reasons, and will be removed if a use
- *             for it cannot be found. Use /api/connect instead.
  */
-@Deprecated
 public class UsersServlet extends JsonRestServlet {
   /**
    * Exposed as `GET /api/users`.
