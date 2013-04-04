@@ -243,7 +243,7 @@ public class Photo extends Jsonifiable {
    */
   @OnLoad
   protected void setupVoteCtaUrl() {
-    voteCtaUrl = PhotosServlet.BASE_URL + "/photo.html?photoId=" + id +
+    voteCtaUrl = PhotosServlet.BASE_URL + "/index.html?photoId=" + id +
         "&action=VOTE";
   }
 
