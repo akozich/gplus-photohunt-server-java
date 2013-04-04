@@ -171,7 +171,7 @@ public class PhotosServlet extends JsonRestServlet {
         }
         if (themeId != null) {
           // Limit photos to just those for the given theme.
-          q.filter("themeId", themeId);
+          q = q.filter("themeId", Long.parseLong(themeId));
         }
         List<Photo> photos = q.list();
 
