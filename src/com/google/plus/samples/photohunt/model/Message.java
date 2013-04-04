@@ -16,22 +16,32 @@
 
 package com.google.plus.samples.photohunt.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import com.google.gson.annotations.Expose;
+
 /**
- * Encapsulates messages returned by the API.
- * 
- * @author silvano@google.com (Silvano Luciani)
+ * Represents response message.
+ *
+ * @author ldenison@google.com (Lee Denison)
  */
-public class Message {
+public class Message extends Jsonifiable {
+	
+  @Expose
+  public static String kind = "photohunt#message";
 
-  private final String content;
-
-  public Message(String content) {
-    this.content = content;
+  public Message(String message) {
+	  this.message = message;
   }
-
-  @Override
-  public String toString() {
-    return this.content;
-  }
+  
+  /**
+   * Message to be returned.
+   */
+  @Getter
+  @Setter
+  @Expose
+  public String message;
 
 }
+
