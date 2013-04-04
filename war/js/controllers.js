@@ -235,7 +235,9 @@ function PhotoHuntCtrl($scope, $location, Conf, PhotoHuntApi) {
       'clientid': Conf.clientId,
       'requestvisibleactions': Conf.requestvisibleactions,
       'scope': Conf.scopes,
-      'apppackagename': Conf.apppackagename,
+      // Remove the comment below if you have configured
+      // appackagename in services.js
+      //'apppackagename': Conf.apppackagename,
       'theme': 'dark',
       'cookiepolicy': Conf.cookiepolicy,
       'accesstype': 'offline'
