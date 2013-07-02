@@ -266,6 +266,7 @@ public class PhotosServlet extends JsonRestServlet {
       
       if (imageKey == null) {
         sendError(resp, 400, "Missing image data.");
+        return;
       }
       
       Long currentUserId = (Long) req.getSession().getAttribute(
@@ -285,13 +286,15 @@ public class PhotosServlet extends JsonRestServlet {
       ofy().save().entity(photo).now();
       ofy().clear();
       photo = ofy().load().type(Photo.class).id(photo.getId()).get();
-      addPhotoToGooglePlusHistory(author, photo, credential);
+      try {
+        addPhotoToGooglePlusHistory(author, photo, credential);
+      } catch (MomentWritingException e) {
+        // Moments always fail to write when using a local server.
+        // This example chooses to ignore this error.
+      } 
       sendResponse(req, resp, photo);
     } catch (UserNotAuthorizedException e) {
       sendError(resp, 401, "Unauthorized request");
-    } catch (MomentWritingException e) {
-      sendError(resp, 500,
-          "Error while writing app activity: " + e.getMessage());
     } catch (GoogleTokenExpirationException e) {
       sendError(resp, 401, "Access token expired");
     }
