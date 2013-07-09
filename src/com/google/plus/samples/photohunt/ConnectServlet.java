@@ -54,8 +54,9 @@ public class ConnectServlet extends JsonRestServlet {
   /**
    * Exposed as `POST /api/connect`.
    *
-   * Takes the following payload in the request body.  Payload represents all
-   * parameters required to authorize and/or connect.
+   * Takes the following payload in the request body.  The payload represents
+   * all of the parameters that are required to authorize and connect the user
+   * to the app.
    * {
    *   "state":"",
    *   "access_token":"",
@@ -87,12 +88,18 @@ public class ConnectServlet extends JsonRestServlet {
    * }
    *
    * Issues the following errors along with corresponding HTTP response codes:
-   * 401: error from token verification end-point.
-   * 500: "Failed to upgrade the authorization code." (for code exchange flows)
+   * 401: The error from the Google token verification end point.
+   * 500: "Failed to upgrade the authorization code." This can happen during
+   *      OAuth v2 code exchange flows.
    * 500: "Failed to read token data from Google."
-   *      + error from reading token verification response.
-   * 500: "Failed to query the Google+ API: " + error from client library.
-   * 500: IOException occurred (several ways this could happen).
+   *      This response also sends the error from the token verification
+   *      response concatenated to the error message.
+   * 500: "Failed to query the Google+ API: " 
+   *      This error also includes the error from the client library
+   *      concatenated to the error response.
+   * 500: "IOException occurred." The IOException could happen when any
+   *      IO-related errors occur such as network connectivity loss or local
+   *      file-related errors.
    *
    * @see javax.servlet.http.HttpServlet#doPost(
    *     javax.servlet.http.HttpServletRequest,
