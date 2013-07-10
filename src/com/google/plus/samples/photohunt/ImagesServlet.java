@@ -21,6 +21,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gson.annotations.Expose;
 import com.google.plus.samples.photohunt.model.Jsonifiable;
+import com.google.plus.samples.photohunt.model.UploadUrl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,22 +87,4 @@ public class ImagesServlet extends JsonRestServlet {
 			sendError(resp, 401, "Unauthorized request");
 		}
 	}
-
-  /**
-   * Simple Jsonifiable to represent token information sent/retrieved from our
-   * app and its clients (web, Android, iOS).
-   */
-  public static class UploadUrl extends Jsonifiable {
-    public static String kind = "photohunt#uploadurl";
-
-    /**
-     * URL ready to received an uploaded image.
-     */
-    @Expose
-    public String url;
-
-    public UploadUrl(String urlString) {
-      this.url = urlString;
-    }
-  }
 }
