@@ -19,6 +19,9 @@ package com.google.plus.samples.photohunt;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.gson.annotations.Expose;
+import com.google.plus.samples.photohunt.model.Jsonifiable;
+import com.google.plus.samples.photohunt.model.UploadUrl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +55,9 @@ public class ImagesServlet extends JsonRestServlet {
 	 * 
 	 * Returns the following JSON response representing an upload URL:
 	 * 
-	 * "http://appid.appspot.com/_ah/upload/upload-key"
+	 * {
+	 *   "url": "http://appid.appspot.com/_ah/upload/upload-key"
+	 * }
 	 * 
 	 * Issues the following errors along with corresponding HTTP response codes:
 	 * 401: "Unauthorized request"
@@ -64,18 +69,20 @@ public class ImagesServlet extends JsonRestServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			checkAuthorization(req);
-			String uploadUrl = blobstoreService.createUploadUrl("/api/photos");
+			String uploadUrlString = blobstoreService.createUploadUrl("/api/photos");
 
 			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development) {
 				String hostname = System.getProperty("development.hostname");
 
 				if (hostname != null) {
 					// modify the url to allow use with the development server
-					uploadUrl = uploadUrl.replace("localhost", hostname);
+					uploadUrlString = uploadUrlString.replace("localhost", hostname);
 				}
 			}
+			
+			UploadUrl uploadUrl = new UploadUrl(uploadUrlString);
 
-			sendResponse(req, resp, uploadUrl, "photohunt#uploadurl");
+			sendResponse(req, resp, uploadUrl);
 		} catch (UserNotAuthorizedException e) {
 			sendError(resp, 401, "Unauthorized request");
 		}

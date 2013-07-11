@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,6 +66,11 @@ public class PhotosServlet extends JsonRestServlet {
    * Base URL of the /api/photos end-point.  Initialized for every GET request.
    */
   public static String BASE_URL;
+  
+  /**
+   * Logger for this servlet.
+   */
+  private static final Logger log = Logger.getLogger(PhotosServlet.class.getName());
 
   /**
    * BlobstoreService from which to fetch image information after an Image
@@ -266,6 +272,7 @@ public class PhotosServlet extends JsonRestServlet {
       
       if (imageKey == null) {
         sendError(resp, 400, "Missing image data.");
+        return;
       }
       
       Long currentUserId = (Long) req.getSession().getAttribute(
@@ -285,13 +292,14 @@ public class PhotosServlet extends JsonRestServlet {
       ofy().save().entity(photo).now();
       ofy().clear();
       photo = ofy().load().type(Photo.class).id(photo.getId()).get();
-      addPhotoToGooglePlusHistory(author, photo, credential);
+      try {
+        addPhotoToGooglePlusHistory(author, photo, credential);
+      } catch (MomentWritingException e) {
+        log.severe("Error while writing app activity: " + e.getMessage());
+      }
       sendResponse(req, resp, photo);
     } catch (UserNotAuthorizedException e) {
       sendError(resp, 401, "Unauthorized request");
-    } catch (MomentWritingException e) {
-      sendError(resp, 500,
-          "Error while writing app activity: " + e.getMessage());
     } catch (GoogleTokenExpirationException e) {
       sendError(resp, 401, "Access token expired");
     }
