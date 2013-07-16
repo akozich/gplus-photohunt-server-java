@@ -89,17 +89,15 @@ public abstract class JsonRestServlet extends HttpServlet {
   /**
    * Send an error down the given response.
    *
-   * @param resp
-   *            Response to use in transmitting error.
-   * @param code
-   *            HTTP response code to issue.
-   * @param message
-   *            Message to attach to response.
+   * @param resp Response to use in transmitting error.
+   * @param code HTTP response code to issue.
+   * @param message Message to attach to response.
    */
   protected void sendError(HttpServletResponse resp, int code, String message) {
     try {
       if (code == 401) {
-        resp.addHeader("WWW-Authenticate", "OAuth realm=\"PhotoHunt\", error=\"invalid-token\"");
+        resp.addHeader("WWW-Authenticate",
+            "OAuth realm=\"PhotoHunt\", error=\"invalid-token\"");
       }
 
       resp.sendError(code, message);
@@ -114,10 +112,8 @@ public abstract class JsonRestServlet extends HttpServlet {
    * Attempts to send an HTTP 500 if there was an error in writing the
    * response.
    *
-   * @param resp
-   *            Response to use in transmitting body.
-   * @param body
-   *            Object on which to call toString() to generate response.
+   * @param resp Response to use in transmitting body.
+   * @param body Object on which to call toString() to generate response.
    */
   protected void sendResponse(HttpServletRequest req,
       HttpServletResponse resp, Collection<? extends Jsonifiable> body,
@@ -148,10 +144,8 @@ public abstract class JsonRestServlet extends HttpServlet {
    * Attempts to send an HTTP 500 if there was an error in writing the
    * response.
    *
-   * @param resp
-   *            Response to use in transmitting body.
-   * @param body
-   *            Object on which to call toString() to generate response.
+   * @param resp Response to use in transmitting body.
+   * @param body Object on which to call toString() to generate response.
    */
   protected void sendResponse(HttpServletRequest req,
       HttpServletResponse resp, Object body, String kind) {
@@ -181,10 +175,8 @@ public abstract class JsonRestServlet extends HttpServlet {
    * Attempts to send an HTTP 500 if there was an error in writing the
    * response.
    *
-   * @param resp
-   *            Response to use in transmitting body.
-   * @param body
-   *            Object on which to call toString() to generate response.
+   * @param resp Response to use in transmitting body.
+   * @param body Object on which to call toString() to generate response.
    */
   protected void sendResponse(HttpServletRequest req,
       HttpServletResponse resp, Jsonifiable body) {
@@ -211,10 +203,8 @@ public abstract class JsonRestServlet extends HttpServlet {
   /**
    * Ensure that there is a user connected before honoring the given request.
    *
-   * @param req
-   *            Request to validate by checking existence of session.
-   * @throws UserNotAuthorizedException
-   *             User does not have existing session.
+   * @param req Request to validate by checking existence of session.
+   * @throws UserNotAuthorizedException User does not have existing session.
    */
   protected void checkAuthorization(HttpServletRequest req)
       throws UserNotAuthorizedException {
@@ -227,11 +217,9 @@ public abstract class JsonRestServlet extends HttpServlet {
   }
 
   /**
-   * @param req
-   *            Request to query for session data.
+   * @param req Request to query for session data.
    * @return Credential representing currently connected User.
-   * @throws GoogleTokenExpirationException
-   *             User's token is expired and cannot be used.
+   * @throws GoogleTokenExpirationException User's token is expired and cannot be used.
    */
   protected GoogleCredential getCredentialFromLoggedInUser(
       HttpServletRequest req) throws GoogleTokenExpirationException {
