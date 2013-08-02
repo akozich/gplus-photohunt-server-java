@@ -198,7 +198,7 @@ public class ConnectServlet extends JsonRestServlet {
 		credential.setExpirationTimeMilliseconds(System.currentTimeMillis() + expiresIn * 1000);
     }
     
-    Pattern p = Pattern.compile("^(\\d*)(.*).apps.googleusercontent.com$");
+    Pattern p = Pattern.compile("([\\d]{9,11})([-]?)(.*)$");
 	Matcher issuedTo = p.matcher(CLIENT_ID);
 	Matcher localId = p.matcher(tokenInfo.getIssuedTo());
 
